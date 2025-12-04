@@ -1,5 +1,6 @@
 package com.wings.repository.impl;
 
-public class BirdRepositoryImpl {
+import com.wings.repository.BirdRepository;
+public class BirdRepositoryImpl implements BirdRepository {
     
 }

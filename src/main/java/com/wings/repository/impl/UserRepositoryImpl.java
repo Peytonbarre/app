@@ -1,5 +1,7 @@
 package com.wings.repository.impl;
 
-public class UserRepositoryImpl {
+import com.wings.repository.UserRepository;
+
+public class UserRepositoryImpl implements UserRepository {
     
 }

@@ -1,5 +1,6 @@
 package com.wings.repository.impl;
 
-public class FriendshipRepositoryImpl {
+import com.wings.repository.FriendshipRepository;
+public class FriendshipRepositoryImpl implements FriendshipRepository {
     
 }

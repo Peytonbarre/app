@@ -1,5 +1,5 @@
 package com.wings.repository;
 
-public class SpottedBirdRepository {
+public interface SpottedBirdRepository {
     
 }
