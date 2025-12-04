@@ -17,7 +17,7 @@ public class DatabaseInitializer {
         );
         
         statement.execute("CREATE TABLE IF NOT EXISTS birds (" +
-            "user_id INTEGER PRIMARY KEY AUTOINCREMENT," +
+            "bird_id INTEGER PRIMARY KEY AUTOINCREMENT," +
             "name TEXT NOT NULL," +
             "habitat TEXT," +
             "rarity DOUBLE)"
