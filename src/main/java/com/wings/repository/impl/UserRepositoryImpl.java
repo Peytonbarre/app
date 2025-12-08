@@ -12,6 +12,7 @@ public class UserRepositoryImpl implements UserRepository {
     public void saveUser(User user) throws SQLException {
         // TODO Auto-generated method stub
         throw new UnsupportedOperationException("Unimplemented method 'saveUser'");
+        
     }
 
     @Override
