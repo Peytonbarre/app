@@ -1,6 +1,8 @@
 package com.wings.repository.impl;
 
 import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.UUID;
 
 import com.wings.database.QueryExecuter;
@@ -40,14 +42,38 @@ public class UserRepositoryImpl implements UserRepository {
 
     @Override
     public User getUserByUsername(String username) throws SQLException {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'getUserByUsername'");
+        String sql = "SELECT * FROM users WHERE username = ?";
+        return QueryExecuter.executeQuery(sql, pstmt -> {
+            pstmt.setString(1, username);
+        }, rs -> {
+            if (rs.next()) {
+                User user = new User (
+                    UUID.fromString(rs.getString("user_id")),
+                    rs.getInt("birds_spotted"),
+                    rs.getInt("current_streak"),
+                    rs.getString("username")
+                );
+                return user;
+            }
+            return null;
+        });
     }
 
     @Override
-    public User[] getAllUsers() throws SQLException {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'getAllUsers'");
+    public List<User> getAllUsers() throws SQLException {
+        String sql = "SELECT * FROM users";
+        List<User> userList = new ArrayList<>();
+        return QueryExecuter.executeQuery(sql,pstmt -> {}, rs -> {
+            while (rs.next()) {
+                User user = new User (
+                    UUID.fromString(rs.getString("user_id")),
+                    rs.getInt("birds_spotted"),
+                    rs.getInt("current_streak"),
+                    rs.getString("username")
+                );
+                userList.add(user);
+            }
+            return userList;
+        });
     }
-    
 }
