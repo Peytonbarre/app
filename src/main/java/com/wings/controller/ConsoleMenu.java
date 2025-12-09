@@ -126,7 +126,15 @@ public class ConsoleMenu {
     }
 
     private void handleAddFriend() {
-
+        consolePrint("What's your friend's username?");
+        String friend = scanner.nextLine();
+        try{
+            birdingService.addFriend(currentUser, friend);
+        } catch (SQLException e) {
+            consoleError("Error adding friend: " + e);
+        } catch (IllegalArgumentException e) {
+            consoleError("Error: " + e);
+        }
     }
 
     private void handleViewMyProfile() {
