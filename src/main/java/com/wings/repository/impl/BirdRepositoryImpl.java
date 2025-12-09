@@ -12,11 +12,12 @@ public class BirdRepositoryImpl implements BirdRepository {
 
     @Override
     public void saveBird(Bird bird) throws SQLException {
-        String sql = "INSERT INTO birds (name, habitat, rarity) VALUES (?, ?, ?)";
+        String sql = "INSERT INTO birds (bird_id, name, habitat, rarity) VALUES (?, ?, ?)";
         QueryExecuter.executeUpdate(sql, pstmt -> {
-            pstmt.setString(1, bird.getName());
-            pstmt.setString(2, bird.getHabitat());
-            pstmt.setDouble(3, bird.getRarity());
+            pstmt.setObject(1, bird.getBirdId());
+            pstmt.setString(2, bird.getName());
+            pstmt.setString(3, bird.getHabitat());
+            pstmt.setDouble(4, bird.getRarity());
         });
     }
 

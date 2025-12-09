@@ -13,11 +13,12 @@ public class UserRepositoryImpl implements UserRepository {
 
     @Override
     public void saveUser(User user) throws SQLException {
-        String sql = "INSERT INTO users (username, current_streak, total_birds_spotted) VALUES (?, ?, ?)";
+        String sql = "INSERT INTO users (user_id, username, current_streak, total_birds_spotted) VALUES (?, ?, ?)";
         QueryExecuter.executeUpdate(sql, pstmt -> {
-            pstmt.setString(1, user.getUsername());
-            pstmt.setInt(2, user.getCurrentStreak());
-            pstmt.setInt(3, user.getBirdsSpotted());
+            pstmt.setObject(1, user.getUserId());
+            pstmt.setString(2, user.getUsername());
+            pstmt.setInt(3, user.getCurrentStreak());
+            pstmt.setInt(4, user.getBirdsSpotted());
         });
     }
 
