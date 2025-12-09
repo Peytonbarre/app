@@ -51,7 +51,7 @@ public class BirdRepositoryImpl implements BirdRepository {
                     rs.getString("habitat"),
                     rs.getDouble("rarity")
                 );
-                allBirds.add(bird);
+                birdList.add(bird);
             }
             return birdList;
         });

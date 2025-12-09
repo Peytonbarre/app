@@ -8,6 +8,6 @@ import com.wings.models.Friendship;
 
 public interface FriendshipRepository {
     void addFriendship(Friendship friendship) throws SQLException;
-    List<Integer> getFriendshipByUserId(UUID userId) throws SQLException;
+    List<Friendship> getFriendshipByUserId(UUID userId) throws SQLException;
     void removeFriendship(UUID userId1, UUID userId2) throws SQLException;
 }

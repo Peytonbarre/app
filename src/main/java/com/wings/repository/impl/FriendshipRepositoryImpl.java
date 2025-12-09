@@ -1,29 +1,55 @@
 package com.wings.repository.impl;
 
 import java.sql.SQLException;
+import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
+import com.wings.database.QueryExecuter;
 import com.wings.models.Friendship;
 import com.wings.repository.FriendshipRepository;
 public class FriendshipRepositoryImpl implements FriendshipRepository {
 
     @Override
     public void addFriendship(Friendship friendship) throws SQLException {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'addFriendship'");
+        String sql = "INSERT INTO friendships (userId1, userId2, friendSince) VALUES (?, ?, ?)";
+        QueryExecuter.executeUpdate(sql, pstmt -> {
+            pstmt.setObject(1, friendship.getUserId1());
+            pstmt.setObject(1, friendship.getUserId2());
+            pstmt.setObject(1, friendship.getFriendSince());
+        });
     }
 
     @Override
-    public List<Integer> getFriendshipByUserId(UUID userId) throws SQLException {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'getFriendshipByUserId'");
+    public List<Friendship> getFriendshipByUserId(UUID userId) throws SQLException {
+        String sql = "SELECT * FROM friendships WHERE userId1 = ? UNION ALL SELECT * FROM frienships WHERE userId2 = ?";
+        List<Friendship> frienshipList = new ArrayList<>();
+        return QueryExecuter.executeQuery(sql, pstmt -> {
+            pstmt.setObject(1, userId);
+            pstmt.setObject(2, userId);
+        }, rs -> {
+            while(rs.next()) {
+                Friendship friendship = new Friendship(
+                    rs.getObject("userId1", UUID.class),
+                    rs.getObject("userId1", UUID.class),
+                    rs.getObject("friendSince", LocalDateTime.class)
+                );
+                frienshipList.add(friendship);
+            }
+            return frienshipList;
+        });
     }
 
     @Override
     public void removeFriendship(UUID userId1, UUID userId2) throws SQLException {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'removeFriendship'");
+        String sql = "DELETE FROM friendships WHERE (userId1 = ? AND userId2 = ?) OR (userId1 = ? AND userId2 = ?)";
+        QueryExecuter.executeUpdate(sql, pstmt -> {
+            pstmt.setObject(1, userId1);
+            pstmt.setObject(2, userId2);
+            pstmt.setObject(3, userId2);
+            pstmt.setObject(4, userId1);
+        });
     }
     
 }
