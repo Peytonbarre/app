@@ -15,9 +15,14 @@ public class FriendshipRepositoryImpl implements FriendshipRepository {
     public void addFriendship(Friendship friendship) throws SQLException {
         String sql = "INSERT INTO friendships (userId1, userId2, friendSince) VALUES (?, ?, ?)";
         QueryExecuter.executeUpdate(sql, pstmt -> {
-            pstmt.setObject(1, friendship.getUserId1());
-            pstmt.setObject(1, friendship.getUserId2());
-            pstmt.setObject(1, friendship.getFriendSince());
+            if(friendship.getUserId1().compareTo(friendship.getUserId2()) < 0){
+                pstmt.setObject(1, friendship.getUserId1());
+                pstmt.setObject(2, friendship.getUserId2());
+            }else{
+                pstmt.setObject(1, friendship.getUserId2());
+                pstmt.setObject(2, friendship.getUserId1());
+            }
+            pstmt.setObject(3, friendship.getFriendSince());
         });
     }
 

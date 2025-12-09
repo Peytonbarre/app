@@ -20,6 +20,4 @@ public class SpottedBird {
     public UUID getUserId() { return this.userId; };
     public UUID getBirdId() { return this.birdId; };
     public LocalDateTime getDateSpotted() { return this.dateSpotted; };
-        //Todo
-    //ToString and equals
 }
