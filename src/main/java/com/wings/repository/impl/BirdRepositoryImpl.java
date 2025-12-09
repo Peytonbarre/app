@@ -14,7 +14,7 @@ public class BirdRepositoryImpl implements BirdRepository {
     public void saveBird(Bird bird) throws SQLException {
         String sql = "INSERT INTO birds (bird_id, name, habitat, rarity) VALUES (?, ?, ?)";
         QueryExecuter.executeUpdate(sql, pstmt -> {
-            pstmt.setObject(1, bird.getBirdId());
+            pstmt.setString(1, bird.getBirdId().toString());
             pstmt.setString(2, bird.getName());
             pstmt.setString(3, bird.getHabitat());
             pstmt.setDouble(4, bird.getRarity());

@@ -31,7 +31,7 @@ public class UserRepositoryImpl implements UserRepository {
             if (rs.next()) {
                 User user = new User (
                     UUID.fromString(rs.getString("user_id")),
-                    rs.getInt("birds_spotted"),
+                    rs.getInt("total_birds_spotted"),
                     rs.getInt("current_streak"),
                     rs.getString("username")
                 );
@@ -50,7 +50,7 @@ public class UserRepositoryImpl implements UserRepository {
             if (rs.next()) {
                 User user = new User (
                     UUID.fromString(rs.getString("user_id")),
-                    rs.getInt("birds_spotted"),
+                    rs.getInt("total_birds_spotted"),
                     rs.getInt("current_streak"),
                     rs.getString("username")
                 );
@@ -68,7 +68,7 @@ public class UserRepositoryImpl implements UserRepository {
             while (rs.next()) {
                 User user = new User (
                     UUID.fromString(rs.getString("user_id")),
-                    rs.getInt("birds_spotted"),
+                    rs.getInt("total_birds_spotted"),
                     rs.getInt("current_streak"),
                     rs.getString("username")
                 );

@@ -13,6 +13,7 @@ public class ConsoleMenu {
     
     private static final String RESET = "\u001B[0m";
     private static final String GREEN = "\u001B[32m";
+    private static final String RED = "\u001B[31m";
 
     public ConsoleMenu(BirdingService birdingService) {
         this.scanner = new Scanner(System.in);
@@ -48,7 +49,7 @@ public class ConsoleMenu {
             case "4" -> handleAddFriend();
             case "5" -> handleViewMyProfile();
             case "6" -> handleLogOut();
-            default -> System.out.println("Input not recognized");
+            default -> consoleError("Input not recognized");
         }
     }
 
@@ -63,7 +64,7 @@ public class ConsoleMenu {
             case "1" -> handleLogin();
             case "2" -> handleSignup();
             case "3" -> handleQuit();
-            default -> System.out.println("Input not recognized");
+            default -> consoleError("Input not recognized");
         }
     }
 
@@ -71,6 +72,12 @@ public class ConsoleMenu {
         System.out.println(GREEN + "=========");
         System.out.println(content);
         System.out.println("=========" + RESET);    
+    }
+
+    private void consoleError(String content) {
+        System.out.println(RED + "=========");
+        System.out.println(content);
+        System.out.println("=========" + RESET);
     }
 
     private void handleLogin() {
@@ -81,25 +88,23 @@ public class ConsoleMenu {
             this.currentUser = user;
             consolePrint("Logged in as " + username);
         } catch (SQLException e) {
-            System.out.println("Error logging in: " + e);
+            consoleError("Error logging in: " + e);
         } catch (IllegalArgumentException e) {
-            System.out.println("User not found");
+            consoleError("User not found");
         }
     }
 
     private void handleSignup() {
         consolePrint("Welcome! What's your username?");
         String username = scanner.nextLine();
-
         try {
-            birdingService.createUser(username);
+            User user = birdingService.createUser(username);
+            this.currentUser = user;
         } catch (SQLException e) {
-            System.out.println("Error creating user: " + e);
+            consoleError("Error creating user: " + e);
         } catch (IllegalArgumentException e) {
-            System.out.println("Error signing up: " + e);
+            consoleError("Error signing up: " + e);
         }
-
-        //TODO: Store user
     }
 
     private void handleQuit() {
