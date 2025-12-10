@@ -3,6 +3,7 @@
 /Users/peytonbarre/Documents/revature/project_0/wings/app/src/main/java/com/wings/repository/FriendshipRepository.java
 /Users/peytonbarre/Documents/revature/project_0/wings/app/src/main/java/com/wings/models/Friendship.java
 /Users/peytonbarre/Documents/revature/project_0/wings/app/src/main/java/com/wings/database/QueryExecuter.java
+/Users/peytonbarre/Documents/revature/project_0/wings/app/src/main/java/com/wings/database/BirdDataLoader.java
 /Users/peytonbarre/Documents/revature/project_0/wings/app/src/main/java/com/wings/database/SQLConsumer.java
 /Users/peytonbarre/Documents/revature/project_0/wings/app/src/main/java/com/wings/repository/impl/BirdRepositoryImpl.java
 /Users/peytonbarre/Documents/revature/project_0/wings/app/src/main/java/com/wings/repository/SpottedBirdRepository.java
@@ -10,6 +11,7 @@
 /Users/peytonbarre/Documents/revature/project_0/wings/app/src/main/java/com/wings/database/DatabaseInitializer.java
 /Users/peytonbarre/Documents/revature/project_0/wings/app/src/main/java/com/wings/database/DatabaseConnection.java
 /Users/peytonbarre/Documents/revature/project_0/wings/app/src/main/java/com/wings/service/BirdingService.java
+/Users/peytonbarre/Documents/revature/project_0/wings/app/src/main/java/com/wings/service/BirdingServiceInterface.java
 /Users/peytonbarre/Documents/revature/project_0/wings/app/src/main/java/com/wings/repository/impl/FriendshipRepositoryImpl.java
 /Users/peytonbarre/Documents/revature/project_0/wings/app/src/main/java/com/wings/repository/impl/UserRepositoryImpl.java
 /Users/peytonbarre/Documents/revature/project_0/wings/app/src/main/java/com/wings/repository/BirdRepository.java

@@ -11,6 +11,7 @@ com/wings/database/DatabaseConnection.class
 com/wings/service/BirdingService.class
 com/wings/database/DatabaseInitializer.class
 com/wings/models/SpottedBird.class
+com/wings/database/BirdDataLoader.class
 com/wings/repository/impl/BirdRepositoryImpl.class
 com/wings/repository/SpottedBirdRepository.class
 com/wings/database/QueryExecuter.class

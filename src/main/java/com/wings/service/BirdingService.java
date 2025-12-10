@@ -43,6 +43,9 @@ public class BirdingService {
     }
 
     public void spotBird(User currentUser, UUID birdId) throws SQLException {
+        if(currentUser == null || birdId == null) {
+            throw new IllegalArgumentException("User and birdId cannot be null");
+        }
         SpottedBird spottedBird = new SpottedBird(UUID.randomUUID(), currentUser.getUserId(), birdId, LocalDateTime.now());
         spottedBirdRepo.saveSpottedBird(spottedBird);
     }
