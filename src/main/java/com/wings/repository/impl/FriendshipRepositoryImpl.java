@@ -13,7 +13,7 @@ public class FriendshipRepositoryImpl implements FriendshipRepository {
 
     @Override
     public void addFriendship(Friendship friendship) throws SQLException {
-        String sql = "INSERT INTO friendships (userId1, userId2, friendSince) VALUES (?, ?, ?)";
+        String sql = "INSERT INTO friendships (user_id_1, user_id_2, friend_since) VALUES (?, ?, ?)";
         QueryExecuter.executeUpdate(sql, pstmt -> {
             if(friendship.getUserId1().compareTo(friendship.getUserId2()) < 0){
                 pstmt.setString(1, friendship.getUserId1().toString());
@@ -28,7 +28,7 @@ public class FriendshipRepositoryImpl implements FriendshipRepository {
 
     @Override
     public List<Friendship> getFriendshipByUserId(UUID userId) throws SQLException {
-        String sql = "SELECT * FROM friendships WHERE userId1 = ? UNION ALL SELECT * FROM frienships WHERE userId2 = ?";
+        String sql = "SELECT * FROM friendships WHERE user_id_1 = ? UNION ALL SELECT * FROM frienships WHERE user_id_2 = ?";
         List<Friendship> frienshipList = new ArrayList<>();
         return QueryExecuter.executeQuery(sql, pstmt -> {
             pstmt.setString(1, userId.toString());
@@ -38,7 +38,7 @@ public class FriendshipRepositoryImpl implements FriendshipRepository {
                 Friendship friendship = new Friendship(
                     UUID.fromString(rs.getString("userId1")),
                     UUID.fromString(rs.getString("userId2")),
-                    LocalDateTime.parse(rs.getString("friendSince"))
+                    LocalDateTime.parse(rs.getString("friend_since"))
                 );
                 frienshipList.add(friendship);
             }
@@ -48,7 +48,7 @@ public class FriendshipRepositoryImpl implements FriendshipRepository {
 
     @Override
     public void removeFriendship(UUID userId1, UUID userId2) throws SQLException {
-        String sql = "DELETE FROM friendships WHERE (userId1 = ? AND userId2 = ?) OR (userId1 = ? AND userId2 = ?)";
+        String sql = "DELETE FROM friendships WHERE (user_id_1 = ? AND user_id_2 = ?) OR (user_id_1 = ? AND user_id_2 = ?)";
         QueryExecuter.executeUpdate(sql, pstmt -> {
             pstmt.setString(1, userId1.toString());
             pstmt.setString(2, userId2.toString());
