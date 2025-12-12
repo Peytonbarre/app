@@ -3,6 +3,7 @@ package com.wings.service;
 import java.io.IOException;
 import java.sql.SQLException;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -81,6 +82,20 @@ public class BirdingService {
         User friend = userRepo.getUserByUsername(username);
         Friendship friendship = new Friendship(currentUser.getUserId(), friend.getUserId(), LocalDateTime.now());
         friendshipRepo.addFriendship(friendship);
+    }
+
+    public List<User> getFriends(UUID userId) throws SQLException {
+        List<Friendship> friends = friendshipRepo.getFriendshipByUserId(userId);
+        List<User> friendList = new ArrayList<>();
+        for(Friendship friend : friends) {
+            UUID friendId = userId == friend.getUserId1() ? friend.getUserId2() : friend.getUserId1();
+            User user = new User(
+                friendId,
+                userRepo.getUserById(userId).getUsername()
+            );
+            friendList.add(user);
+        }
+        return friendList;
     }
 
     // TODO - Ask degree of seperation, up to personal direction?

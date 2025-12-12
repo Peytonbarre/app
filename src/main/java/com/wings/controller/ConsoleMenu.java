@@ -44,8 +44,9 @@ public class ConsoleMenu {
         System.out.println("2. View My Birds");
         System.out.println("3. View Leaderboard");
         System.out.println("4. Add Friend");
-        System.out.println("5. View My Profile");
-        System.out.println("6. Log Out");
+        System.out.println("5. View Friends");
+        System.out.println("6. View My Profile");
+        System.out.println("7. Log Out");
 
         String choice = scanner.nextLine();
 
@@ -54,8 +55,9 @@ public class ConsoleMenu {
             case "2" -> handleViewMyBirds();
             case "3" -> handleViewLeaderboard();
             case "4" -> handleAddFriend();
-            case "5" -> handleViewMyProfile();
-            case "6" -> handleLogOut();
+            case "5" -> handleViewFriends();
+            case "6" -> handleViewMyProfile();
+            case "7" -> handleLogOut();
             default -> consoleError("Input not recognized");
         }
     }
@@ -209,9 +211,21 @@ public class ConsoleMenu {
         }
     }
 
+    private void handleViewFriends() {
+        System.out.println("=== Friends ===");
+            System.out.printf("%-30s | %-20s | %-20s%n | %-20s", "Username", "Birds Spotted", "Streak");
+    }
+
     private void handleViewMyProfile() {
-        //TODO
-        consolePrint(currentUser.toString());
+        try {
+            int currentStreak = birdingService.getCurrentStreak(currentUser.getUserId());
+            int birdsSpotted = birdingService.getTotalBirdsSpotted(currentUser);
+            consolePrint(currentUser.getUsername() + '\n' 
+                        + "Birds Spotted: " +  birdsSpotted + '\n'
+                        + "Daily Streak: " + currentStreak);
+        } catch (SQLException e) {
+            consoleError("Error: " + e);
+        }
     }
 
     private void handleLogOut() {
