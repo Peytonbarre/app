@@ -3,7 +3,9 @@ package com.wings.repository.impl;
 import java.sql.SQLException;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.UUID;
 
 import com.wings.database.QueryExecuter;
@@ -20,11 +22,6 @@ public class SpottedBirdRepositoryImpl implements SpottedBirdRepository {
             pstmt.setString(2, spottedBird.getUserId().toString());
             pstmt.setString(3, spottedBird.getBirdId().toString());
             pstmt.setString(4, spottedBird.getDateSpotted().toString());
-        });
-        
-        sql = "UPDATE users SET total_birds_spotted = total_birds_spotted + 1 WHERE user_id = ?";
-        QueryExecuter.executeUpdate(sql, pstmt -> {
-            pstmt.setString(1, spottedBird.getUserId().toString());
         });
     }
 
@@ -63,6 +60,50 @@ public class SpottedBirdRepositoryImpl implements SpottedBirdRepository {
                 spottedBirdList.add(spottedBird);
             }
             return spottedBirdList;
+        });
+    }
+
+    @Override
+    public int getTotalSpottedBirdsByUserId(UUID userId) throws SQLException {
+        String sql = "SELECT count(*) AS total_birds_spotted FROM spotted_birds WHERE user_id = ?";
+        return QueryExecuter.executeQuery(sql, pstmt -> {
+            pstmt.setString(1, userId.toString());
+        }, rs -> {
+            if(rs.next()){
+                int count = rs.getInt("total_birds_spotted");
+                return count;
+            }
+            return null;
+        });
+    }
+
+    @Override
+    public Map<UUID, Integer> getTopTenBirdsSpottedUsersByUserId() throws SQLException {
+        String sql = "SELECT user_id, COUNT(bird_id) AS bird_count FROM spotted_birds GROUP BY user_id ORDER BY bird_count DESC";
+        Map<UUID, Integer> topTenList = new HashMap<>();
+        return QueryExecuter.executeQuery(sql, pstmt->{}, rs -> {
+            while(rs.next()){
+                topTenList.put(UUID.fromString(rs.getString("user_id")),Integer.valueOf(rs.getInt("bird_count")));
+            }
+            return topTenList;
+        });
+    }
+
+    @Override
+    public int getStreakByUserId(UUID userId) throws SQLException {
+        String sql = "SELECT \n" +
+                    "  SUM(count(*)) OVER (ORDER BY strftime('%D', date_spotted)) as streak\n" +
+                    "FROM spotted_birds\n" +
+                    "WHERE user_id = ?\n" +
+                    "GROUP BY strftime('%D', date_spotted)\n" +
+                    "ORDER BY strftime('%D', date_spotted)";
+        return QueryExecuter.executeQuery(sql,pstmt -> {
+            pstmt.setString(1, userId.toString());
+        }, rs -> {
+            if(rs.next()){
+                return rs.getInt("streak");
+            }
+            return null;
         });
     }
 }

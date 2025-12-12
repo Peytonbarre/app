@@ -45,7 +45,6 @@ public class BirdingServiceTest {
         assertNotNull(createdUser);
         assertEquals(username, createdUser.getUsername());
         assertEquals(0, createdUser.getCurrentStreak());
-        assertEquals(0, createdUser.getBirdsSpotted());
 
         verify(mockUserRepo).saveUser(any(User.class));
     }
@@ -54,7 +53,7 @@ public class BirdingServiceTest {
     @DisplayName("Should fail to create user with duplicate username")
     public void testCreateUserDuplicateUsernameFail() throws SQLException {
         String username = "username";
-        User existingUser = new User(UUID.randomUUID(), 0, 0, username);
+        User existingUser = new User(UUID.randomUUID(), 0, username);
         when(mockUserRepo.getUserByUsername(username)).thenReturn(existingUser);
 
         IllegalArgumentException exception = assertThrows(IllegalArgumentException.class, () -> birdingService.createUser(username)
@@ -94,7 +93,7 @@ public class BirdingServiceTest {
     @DisplayName("Should create bird spotting with correct user and bird")
     public void testSpotBirdSuccess() throws SQLException {
         UUID birdId = UUID.randomUUID();
-        User user = new User(UUID.randomUUID(), 0, 0, "username");
+        User user = new User(UUID.randomUUID(), 0, "username");
 
         birdingService.spotBird(user, birdId);
 
@@ -120,7 +119,7 @@ public class BirdingServiceTest {
     @Test
     @DisplayName("Should fail to create bird with null bird ID")
     public void testSpotBirdNullBirdIdFail() throws SQLException {
-        User user = new User(UUID.randomUUID(), 0, 0, "username");
+        User user = new User(UUID.randomUUID(), 0, "username");
 
         assertThrows(IllegalArgumentException.class, () -> birdingService.spotBird(user, null));
 

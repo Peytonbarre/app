@@ -3,7 +3,9 @@ package com.wings.service;
 import java.io.IOException;
 import java.sql.SQLException;
 import java.time.LocalDateTime;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.UUID;
 
 import com.wings.models.*;
@@ -48,6 +50,11 @@ public class BirdingService {
         }
         SpottedBird spottedBird = new SpottedBird(UUID.randomUUID(), currentUser.getUserId(), birdId, LocalDateTime.now());
         spottedBirdRepo.saveSpottedBird(spottedBird);
+        currentUser.setCurrentStreak(getCurrentStreak(currentUser.getUserId()) + 1);
+    }
+
+    public int getCurrentStreak(UUID userId) throws SQLException {
+        return spottedBirdRepo.getStreakByUserId(userId);
     }
 
     public List<Bird> getAllBirds() throws SQLException {
@@ -56,7 +63,7 @@ public class BirdingService {
 
     public List<SpottedBird> getMyBirds(User currentUser) throws SQLException {
         List<SpottedBird> spottedBirdList= spottedBirdRepo.getSpottedBirdsByUserId(currentUser.getUserId());
-        
+
         return spottedBirdList;
     }
 
@@ -76,7 +83,23 @@ public class BirdingService {
         friendshipRepo.addFriendship(friendship);
     }
 
-    public User[] getLeaderboard() throws SQLException {
-        return userRepo.getTopTenUsers();
+    // TODO - Ask degree of seperation, up to personal direction?
+    public Map<User, Integer> getLeaderboard() throws SQLException {
+        Map<User, Integer> processedMap = new HashMap<>();
+        Map<UUID, Integer> rawMap = spottedBirdRepo.getTopTenBirdsSpottedUsersByUserId();
+        rawMap.forEach((uuid, count) -> {
+            try {
+                User user = userRepo.getUserById(uuid);
+                processedMap.put(user, count);
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+        });
+        return processedMap;
     }
+
+    public int getTotalBirdsSpotted(User user) throws SQLException {
+        return spottedBirdRepo.getTotalSpottedBirdsByUserId(user.getUserId());
+    }
+
 }

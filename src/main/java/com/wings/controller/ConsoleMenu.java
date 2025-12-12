@@ -3,7 +3,9 @@ package com.wings.controller;
 import java.sql.SQLException;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
+import java.util.Map;
 import java.util.Scanner;
+import java.util.concurrent.atomic.AtomicInteger;
 import java.util.stream.Collectors;
 
 import com.wings.models.Bird;
@@ -179,15 +181,17 @@ public class ConsoleMenu {
 
     private void handleViewLeaderboard() {
         try{
-            User[] leaderboard = birdingService.getLeaderboard();
+            Map<User, Integer> leaderBoardUnsorted = birdingService.getLeaderboard();
             System.out.println("=== Bird Spottings ===");
             System.out.printf("%-5s | %-30s | %-20s | %-20s%n", "No.", "Username", "Birds Spotted", "Streak");
-            for(int i = 0; i<leaderboard.length; i++) {
-                if(leaderboard[i] == null) {
-                    break;
+            AtomicInteger i = new AtomicInteger(1);
+            leaderBoardUnsorted.forEach((user, count) -> {
+                try {
+                    System.out.printf("%-5d | %-30s | %-20s | %-20s%n", i.getAndIncrement(), user.getUsername(), count, birdingService.getCurrentStreak(user.getUserId()));
+                } catch (SQLException e) {
+                    e.printStackTrace();
                 }
-                System.out.printf("%-5d | %-30s | %-20s | %-20s%n", i + 1, leaderboard[i].getUsername(), leaderboard[i].getBirdsSpotted(), leaderboard[i].getCurrentStreak());
-            }
+            });
         } catch (SQLException e) {
             consoleError("Error getting leaderboard: " + e);
         }
@@ -206,6 +210,7 @@ public class ConsoleMenu {
     }
 
     private void handleViewMyProfile() {
+        //TODO
         consolePrint(currentUser.toString());
     }
 

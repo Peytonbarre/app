@@ -13,12 +13,11 @@ public class UserRepositoryImpl implements UserRepository {
 
     @Override
     public void saveUser(User user) throws SQLException {
-        String sql = "INSERT INTO users (user_id, username, current_streak, total_birds_spotted) VALUES (?, ?, ?, ?)";
+        String sql = "INSERT INTO users (user_id, username, current_streak) VALUES (?, ?, ?)";
         QueryExecuter.executeUpdate(sql, pstmt -> {
             pstmt.setString(1, user.getUserId().toString());
             pstmt.setString(2, user.getUsername());
             pstmt.setInt(3, user.getCurrentStreak());
-            pstmt.setInt(4, user.getBirdsSpotted());
         });
     }
 
@@ -31,7 +30,6 @@ public class UserRepositoryImpl implements UserRepository {
             if (rs.next()) {
                 User user = new User (
                     UUID.fromString(rs.getString("user_id")),
-                    rs.getInt("total_birds_spotted"),
                     rs.getInt("current_streak"),
                     rs.getString("username")
                 );
@@ -50,7 +48,6 @@ public class UserRepositoryImpl implements UserRepository {
             if (rs.next()) {
                 User user = new User (
                     UUID.fromString(rs.getString("user_id")),
-                    rs.getInt("total_birds_spotted"),
                     rs.getInt("current_streak"),
                     rs.getString("username")
                 );
@@ -68,7 +65,6 @@ public class UserRepositoryImpl implements UserRepository {
             while (rs.next()) {
                 User user = new User (
                     UUID.fromString(rs.getString("user_id")),
-                    rs.getInt("total_birds_spotted"),
                     rs.getInt("current_streak"),
                     rs.getString("username")
                 );
@@ -78,22 +74,22 @@ public class UserRepositoryImpl implements UserRepository {
         });
     }
 
-    @Override
-    public User[] getTopTenUsers() throws SQLException {
-        String sql = "SELECT * FROM users ORDER BY total_birds_spotted DESC LIMIT 10";
-        User[] userList = new User[10];
-        return QueryExecuter.executeQuery(sql, pstmt -> {}, rs -> {
-            int iterator = 0;
-            while(rs.next()) {
-                User user = new User (
-                    UUID.fromString(rs.getString("user_id")),
-                    rs.getInt("total_birds_spotted"),
-                    rs.getInt("current_streak"),
-                    rs.getString("username")
-                );
-                userList[iterator++] = user;
-            }
-            return userList;
-        });
-    }
+    //TODO
+    // @Override
+    // public User[] getTopTenUsers() throws SQLException {
+    //     String sql = "SELECT * FROM users ORDER BY total_birds_spotted DESC LIMIT 10";
+    //     User[] userList = new User[10];
+    //     return QueryExecuter.executeQuery(sql, pstmt -> {}, rs -> {
+    //         int iterator = 0;
+    //         while(rs.next()) {
+    //             User user = new User (
+    //                 UUID.fromString(rs.getString("user_id")),
+    //                 rs.getInt("current_streak"),
+    //                 rs.getString("username")
+    //             );
+    //             userList[iterator++] = user;
+    //         }
+    //         return userList;
+    //     });
+    // }
 }
